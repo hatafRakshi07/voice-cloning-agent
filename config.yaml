@@ -1,0 +1,118 @@
+# Voice Cloning Agent Configuration
+
+# Model Configuration
+models:
+  encoder:
+    name: "resnet_speaker_encoder"
+    pretrained: true
+    checkpoint: "models/encoder.pth"
+  
+  synthesizer:
+    name: "tacotron2"
+    pretrained: true
+    checkpoint: "models/synthesizer.pth"
+  
+  vocoder:
+    name: "hifi_gan"
+    pretrained: true
+    checkpoint: "models/vocoder.pth"
+
+# Audio Processing Configuration
+audio:
+  sample_rate: 22050
+  n_fft: 1024
+  hop_length: 256
+  win_length: 1024
+  n_mels: 80
+  fmin: 50
+  fmax: 7600
+  ref_db: 20
+  min_db: -40
+
+# Voice Cloning Configuration
+cloning:
+  min_duration: 5.0          # Minimum audio duration in seconds
+  max_duration: 30.0         # Maximum audio duration in seconds
+  embedding_dim: 256         # Speaker embedding dimension
+  num_mels: 80              # Number of mel frequency bins
+
+# Speech Synthesis Configuration
+synthesis:
+  batch_size: 4
+  max_text_length: 500
+  temperature: 0.8
+  top_p: 0.9
+  speed: 1.0
+
+# Processing Configuration
+processing:
+  device: "cuda"            # "cuda" or "cpu"
+  num_workers: 4
+  pin_memory: true
+  mixed_precision: true     # Use mixed precision training
+
+# Voice Conversion Configuration
+voice_conversion:
+  enabled: true
+  models:
+    - "adaptive_instance_normalization"
+    - "voice_filter_net"
+
+# Data Storage Configuration
+storage:
+  base_path: "data"
+  models_path: "data/models"
+  voices_path: "data/voices"
+  output_path: "outputs"
+  max_voices: 100
+  max_storage_gb: 50
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  reload: false
+  workers: 4
+  timeout: 300
+  max_upload_size_mb: 50
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/voice_agent.log"
+  max_bytes: 10485760      # 10MB
+  backup_count: 5
+
+# Performance Optimization
+optimization:
+  cache_embeddings: true
+  use_mixed_precision: true
+  num_threads: 8
+  benchmark: false
+
+# Quality Assessment
+quality:
+  enabled: true
+  metrics:
+    - "mcd"                # Mel Cepstral Distortion
+    - "f0_rmse"           # Fundamental Frequency RMSE
+    - "speaker_verification"
+  thresholds:
+    min_speaker_verification: 0.7
+    min_audio_quality: 0.6
+
+# Security Configuration
+security:
+  enable_auth: false
+  max_requests_per_minute: 100
+  validate_audio_format: true
+  sanitize_filenames: true
+
+# Advanced Options
+advanced:
+  use_onnx: false          # Use ONNX for inference
+  quantization: false      # Model quantization
+  pruning: false          # Model pruning
+  distillation: false     # Knowledge distillation
